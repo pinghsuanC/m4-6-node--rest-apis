@@ -3,13 +3,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const { clients } = require("./data/clients");
-const {
-  handleAllClients,
-  handleClientId,
-  handleAddClient,
-  handleDeleteClient,
-} = require("./handlers/clientHandlers");
+const { words } = require("../data/words");
+const { handleWordId, handleWord, handleGuessLetter } = require("../handlers/hangmanHandlers");
 
 express()
   .use(function (req, res, next) {
@@ -26,11 +21,9 @@ express()
   .use(express.urlencoded({ extended: false }))
 
   // endpoints
-  // endpoint to access all clients
-  .get("/clients", handleAllClients)
-  .get("/clients/:id", handleClientId)
-  .post("/clients", handleAddClient)
-  .delete("/clients/:id", handleDeleteClient)
+  .get("/hangman/word/:id", handleWordId)
+  .get("/hangman/word", handleWord)
+  .get("/hangman/guess/:id/:letter", handleGuessLetter)
 
   // catch other and throw 404
   .get("*", (req, res) => {
